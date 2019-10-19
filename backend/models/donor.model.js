@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
-const donorDonations = new Schema ({donationdate:{type: Date}, din: String, location: String})
+const donorDonationSchema = new Schema ({donationdate:{type: Date}, din: String, location: String})
 
 const donorSchema = new Schema({
     firstname: {
@@ -12,7 +12,6 @@ const donorSchema = new Schema({
         trim: true,
         minlength: 1
     },
-
     middlename: String,
     lastname: {
         type: String,
@@ -57,8 +56,12 @@ const donorSchema = new Schema({
     service: String,
     rank: String,
     paygrade: String,
-    donations:[donorDonations],
-    child: donorDonations
+    lastdonation: {
+        type: Date,
+        default: Date("1980-01-01")
+    },
+    donations:[donorDonationSchema],
+    child: donorDonationSchema
     },
     {
         timestamps: true,

@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
+const productSchema = new Schema({
+    product: String, productname: String, expiredate: {type: Date}
+});
+
 
 const donationSchema = new Schema({
     firstname: String,
@@ -16,8 +20,14 @@ const donationSchema = new Schema({
         trim: true,
         minlength: 10
     },
-    products: [{product: String, productname: String, expiredate: Date}]
-
+    donationsite: String,
+    race: String,
+    service: String,
+    rank: String,
+    paygrade: String,
+    donationuic: String,
+    products: [productSchema],
+    child: productSchema
     },
     {
         timestamps: true,

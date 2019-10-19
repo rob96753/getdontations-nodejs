@@ -1,9 +1,10 @@
 import React from 'react';
 import Checkbox from './Checkbox'
 import Spacer from 'react-add-space';
+import InputMask from 'react-input-mask';
+import axios from 'axios';
 
 
-//import axios from 'axios';
 //import DatePicker from 'react-datepicker';
 //import "react-datepicker/dist/react-datepicker.css";
 
@@ -16,14 +17,17 @@ export default class DonorAdd extends React.Component {
         this.onChangeLastName = this.onChangeLastName.bind(this);
         this.onChangeMiddleName = this.onChangeMiddleName.bind(this);
         this.onChangeFirstName = this.onChangeFirstName.bind(this);
+        this.onChangeSsn = this.onChangeSsn.bind(this);
+        this.onChangeDob = this.onChangeDob.bind(this);
         this.onChangeGender = this.onChangeGender.bind(this);
         this.onChangeBloodType = this.onChangeBloodType.bind(this);
         this.onChangeRace = this.onChangeRace.bind(this);
-        this.onSubmit = this.onSubmit.bind(this);
         this.onChangeLtowbCheck = this.onChangeLtowbCheck.bind(this);
-
-
+        this.onChangeService = this.onChangeService.bind(this);
+        this.onChangeMos = this.onChangeMos.bind(this);
+        this.onChangePaygrade = this.onChangePaygrade.bind(this);
         this.render = this.render.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
 
 
         // this is equivalent to creating a variable
@@ -39,7 +43,7 @@ export default class DonorAdd extends React.Component {
             ltowb: false,
             gender: '',
             race: '',
-            dob: new Date(),
+            dob: new Date('01/01/1900'),
             service: '',
             mos: '',
             rank: '',
@@ -47,26 +51,10 @@ export default class DonorAdd extends React.Component {
             donations: [],
             bloodtypes: [],
             genders: [],
-            races: []
+            races: [],
+            services: []
         }
     }
-
-    /*
-    <select ref="userInput"
-                                required
-                                className="form-control"
-                                value={this.state.lastname}
-                                onChange={this.onChangeLastName}>
-                            {
-                                this.state.users.map(function (user) {
-                                    return <option
-                                        key={user}
-                                        value={user}>{user}
-                                    </option>;
-                                })
-                            }
-                        </select>
-     */
 
     render() {
 
@@ -111,19 +99,20 @@ export default class DonorAdd extends React.Component {
                         </div>
                         <div className="form-group">
                             <label>Donor SSN
-                            <input type="text"
+                            <InputMask
                                    required
                                    className="form-control"
                                    value={this.state.ssn}
                                    onChange={this.onChangeSsn}
+                                   mask="999-99-9999"
                             />
                             </label>
                                 <Spacer amount={8} />
                             <label>Donor DOB:
-                            <input type="text"
+                            <input type="date"
                                    required
                                    className="form-control"
-                                   value={this.state.lastname}
+                                   value={this.state.dob}
                                    onChange={this.onChangeDob}
                             />
                             </label>
@@ -186,12 +175,42 @@ export default class DonorAdd extends React.Component {
 
 
                     <div className="form-group">
-                    <label>Service: </label>
 
-                    <label>MOS: </label>
+                        <label>Service
+                            <select
+                                   required
+                                   className="form-control"
+                                   value={this.state.service}
+                                   onChange={this.onChangeService}>{this.state.services.map((service)=> {
+                                           return <option key={service}
+                                                          value={service}>{service}
+                                           </option>
+                                       })
+                            }
+                            </select>
+                        </label>
+                        <Spacer amount={8} />
+                        <label>MOS:
+                            <input type="text"
+                                   required
+                                   className="form-control"
+                                   value={this.state.mos}
+                                   onChange={this.onChangeMos}
+                            />
+                        </label>
 
-
-                    <label>Paygrade: </label>
+                        <Spacer amount={8} />
+                        <label>Paygrade:
+                            <input type="text"
+                                   required
+                                   className="form-control"
+                                   value={this.state.paygrade}
+                                   onChange={this.onChangePaygrade}
+                            />
+                        </label>
+                    </div>
+                    <div className="form-group">
+                        <input type="submit" value="Add Donor" className="btn btn-primary"/>
                     </div>
                 </form>
             </div>
@@ -204,11 +223,14 @@ export default class DonorAdd extends React.Component {
                 bloodtypes: ['A POS', 'A NEG', 'B POS', 'B NEG', 'AB POS', 'AB NEG', 'O POS', 'O NEG'],
                 bloodtype: 'O NEG',
 
-                genders: ['Male', 'Female'],
+                genders: ['Male', 'Female', 'Other'],
                 gender: 'Male',
 
-                races: ['Hispanic', 'Caucasian', 'Black', 'Asian', 'SE Asian', 'Pacific Islander', 'Native American'],
-                race: 'Caucasian'
+                races: ['Hispanic', 'Caucasian', 'Black', 'Asian', 'SE Asian', 'Pacific Islander', 'Native American', 'Other'],
+                race: 'Caucasian',
+
+                services: ['ARMY', 'AIR FORCE', 'MARINES', 'NAVY', 'COAST GUARD', 'ANG', 'CIV', 'FN', 'OTHER'],
+                service: 'OTHER'
             }
         )
     }
@@ -269,35 +291,52 @@ export default class DonorAdd extends React.Component {
         })
     }
 
+    onChangePaygrade(e){
+        this.setState( {
+            paygrade: e.target.value
+        })
+    }
+
+    onChangeMos(e){
+        this.setState( {
+            mos: e.target.value
+        })
+    }
+
+    onChangeService(e){
+        this.setState( {
+            service: e.target.value
+        })
+    }
 
     onSubmit(e) {
         // prevents default HTML submit from performing
         e.preventDefault();
 
         const donor = {
-            lastname: this.state.lastname,
-            middlename: this.state.middlename,
-            firstname: this.state.firstname,
-            ssn: this.state.ssn,
-            dodid: this.state.dodid,
-            bloodtype: this.state.bloodtype,
-            nationality: this.state.nationality,
-            militaryunit: this.state.militaryunit,
+            lastname: this.state.lastname.toUpperCase(),
+            middlename: this.state.middlename.toUpperCase(),
+            firstname: this.state.firstname.toUpperCase(),
+            ssn: this.state.ssn.toUpperCase(),
+            dodid: this.state.dodid.toUpperCase(),
+            bloodtype: this.state.bloodtype.toUpperCase(),
+            nationality: this.state.nationality.toUpperCase(),
+            militaryunit: this.state.militaryunit.toUpperCase(),
             ltowb: this.state.ltowb,
-            gender: this.state.gender,
-            race: this.state.race,
+            gender: this.state.gender.toUpperCase(),
+            race: this.state.race.toUpperCase(),
             dob: this.state.dob,
-            service: this.state.service,
-            mos: this.state.mos,
-            rank: this.state.rank,
-            paygrade: this.state.paygrade,
+            service: this.state.service.toUpperCase(),
+            mos: this.state.mos.toUpperCase(),
+            rank: this.state.rank.toUpperCase(),
+            paygrade: this.state.paygrade.toUpperCase(),
             donations: this.state.donations
         }
 
         console.log(donor);
 
-        //axios.post('http://localhost:5000/exercises/add', donor)
-        //    .then(res => console.log(res.data));
+        axios.post('http://localhost:5000/donor/add', donor)
+            .then(res => console.log(res.data))
 
         window.location = '/';
     }

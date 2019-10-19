@@ -10,35 +10,37 @@ router.route('/').get((req, res) => {
 router.route('/add').post((req, res) => {
     const firstname = req.body.firstname;
     const lastname = req.body.lastname;
-    const middlename = req.body.middlename;
     const ssn = req.body.ssn;
     const dodid = req.body.dodid;
     const bloodtype = req.body.bloodtype;
-    const race = reg.body.race;
+    const race = req.body.race;
     const dob = req.body.dob;
     const service = req.body.service;
     const rank = req.body.rank;
     const paygrade = req.body.paygrade;
     const din = req.body.din;
+    const donationsite = req.body.donationsite;
     const products = req.body.products;
+    const donationuic = req.body.donationuic;
 
-    const newDonor = new Donor({firstname,
+    const newDonation = new Donation({firstname,
         lastname,
-        middlename,
         ssn,
         dodid,
         bloodtype,
-        race,
         dob,
-        service,
-        rank,
-        paygrade,
         din,
+        donationsite,
+        donationuic,
+        race,
+        service,
+        paygrade,
+        rank,
         products
     });
 
-    newDonor.save()
-        .then(() => res.json('Donor Added!'))
+    newDonation.save()
+        .then(() => res.json('Donation Added!'))
         .catch(err=> res.status(400).json('Error: ' + err));
 });
 

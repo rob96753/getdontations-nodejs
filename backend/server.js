@@ -17,11 +17,14 @@ connection.once('open', () => {
     console.log("Mongo database connection established successfully");
 })
 
+
 const donationRoute = require('./routes/donation');
 const donorRoute = require('./routes/donor');
+const generatorRoute = require('./routes/generator')
 
 app.use('/donation', donationRoute);
 app.use('/donor', donorRoute);
+app.use('/generator', generatorRoute);
 
 app.listen(port, () => {
     console.log(`Server is running on port: ${port}`);
