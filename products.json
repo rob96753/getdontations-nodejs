@@ -1,0 +1,55 @@
+{
+  "products": {
+    "E0206V00": {
+      "desc": "RED BLOOD CELLS|CPDA-1/450mL/refg|Irradiated",
+      "type": "RBC",
+      "expire": "5"
+    },
+    "E0195V00": {
+      "desc": "RED BLOOD CELLS|CPDA-1/450mL/refg",
+      "type": "RBC",
+      "expire": "42"
+    },
+    "E4635V00": {
+      "desc": "Apheresis PLATELETS|ACD-A/XX/20-24C|<3 X log11 plts",
+      "type": "PLT",
+      "expire": "5"
+    },
+    "E0505V00": {
+      "desc": "Frozen RED BLOOD CELLS|None/XX/<-65C|Open ",
+      "type": "FRBC",
+      "expire": "365"
+    },
+    "E4522V00": {
+      "desc": "Deglycerolized RED BLOOD CELLS|None/XX/refg|Open|Irradiated",
+      "type": "DRBC",
+      "expire": "5"
+    },
+    "E0023V00": {
+      "desc": "WHOLE BLOOD|CPD/500mL/refg",
+      "type": "WB",
+      "expire": "42"
+    },
+    "E0900V00": {
+      "desc": "Apheresis FRESH FROZEN PLASMA|ACD-A/XX/<=-18C|>=200 mL <400mL",
+      "type": "FFP",
+      "expire": "365"
+    },
+    "E5165V00": {
+      "desc": "CRYOPRECIPITATE|None/XX/<=-18C",
+      "type": "CRYO",
+      "expire": "365"
+    },
+    "E5222V00": {
+      "desc": "PLATELETS|CPD/500mL/20-24C|For mnf:non-injectable",
+      "type": "PLT",
+      "expire": "5"
+    }
+  },
+  "groups": {
+    "WB": ["E0023V00"],
+    "RBC-IRR": ["E0195V00", "E0900V00", "E5222V00"],
+    "RBC-REF": ["E0195V00", "E4635V00", "E5165V00"],
+    "RBC-FRZN": ["E0505V00", "E5222V00", "E5165V00"]
+  }
+}

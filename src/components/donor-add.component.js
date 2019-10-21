@@ -18,12 +18,14 @@ export default class DonorAdd extends React.Component {
         this.onChangeMiddleName = this.onChangeMiddleName.bind(this);
         this.onChangeFirstName = this.onChangeFirstName.bind(this);
         this.onChangeSsn = this.onChangeSsn.bind(this);
+        this.onChangeDodid = this.onChangeDodid.bind(this);
         this.onChangeDob = this.onChangeDob.bind(this);
         this.onChangeGender = this.onChangeGender.bind(this);
         this.onChangeBloodType = this.onChangeBloodType.bind(this);
         this.onChangeRace = this.onChangeRace.bind(this);
         this.onChangeLtowbCheck = this.onChangeLtowbCheck.bind(this);
         this.onChangeService = this.onChangeService.bind(this);
+        this.onChangeRank = this.onChangeRank.bind(this);
         this.onChangeMos = this.onChangeMos.bind(this);
         this.onChangePaygrade = this.onChangePaygrade.bind(this);
         this.render = this.render.bind(this);
@@ -38,7 +40,7 @@ export default class DonorAdd extends React.Component {
             ssn: '',
             dodid: '',
             bloodtype: '',
-            nationality: '',
+            nationality: 'United States of America',
             militaryunit: '',
             ltowb: false,
             gender: '',
@@ -48,6 +50,7 @@ export default class DonorAdd extends React.Component {
             mos: '',
             rank: '',
             paygrade: '',
+            lastdonation: new Date('2018-01-01'),
             donations: [],
             bloodtypes: [],
             genders: [],
@@ -65,14 +68,14 @@ export default class DonorAdd extends React.Component {
                 <hr />
                 <form onSubmit={this.onSubmit}>
                         <div className="form-group" key={`inline-input`}
-                             justifyContent= "space-between">
+                             justifycontent= "space-between">
                         <label>Donor First Name
                             <input type="text"
                                    required
                                    className="form-control"
                                    value={this.state.firstname}
                                    onChange={this.onChangeFirstName}
-                                   style={{flex:2,flexDirection:"row",justifyContent:'space-between',padding:'10'}}
+                                   style={{flex:2,flexDirection:"row",justifycontent:'space-between',padding:'10'}}
                             />
                         </label>
                             <Spacer amount={8} />
@@ -83,7 +86,7 @@ export default class DonorAdd extends React.Component {
                                className="form-control"
                                value={this.state.middlename}
                                onChange={this.onChangeMiddleName}
-                                   style={{flex:2,flexDirection:"row",justifyContent:'space-between',padding:'10'}}
+                                   style={{flex:2,flexDirection:"row",justifycontent:'space-between',padding:'10'}}
                                    />
                         </label>
                             <Spacer amount={8} />
@@ -95,7 +98,6 @@ export default class DonorAdd extends React.Component {
                                    onChange={this.onChangeLastName}
                             />
                         </label>
-
                         </div>
                         <div className="form-group">
                             <label>Donor SSN
@@ -107,7 +109,17 @@ export default class DonorAdd extends React.Component {
                                    mask="999-99-9999"
                             />
                             </label>
-                                <Spacer amount={8} />
+                            <Spacer amount={8} />
+                            <label>Donor DoD ID
+                                <InputMask
+                                    required
+                                    className="form-control"
+                                    value={this.state.dodid}
+                                    onChange={this.onChangeDodid}
+                                    mask="9999999999"
+                                />
+                            </label>
+                            <Spacer amount={8} />
                             <label>Donor DOB:
                             <input type="date"
                                    required
@@ -149,7 +161,7 @@ export default class DonorAdd extends React.Component {
                         </label>
                     </div>
 
-                    <div className="form-group" key={`inline-input`}>
+                    <div className="form-group" key={`inline-input-type`}>
                         <label>
                                 <span>Select Blood Type (ABORH):
                                 <select ref='userInput' required className="form-control"
@@ -174,7 +186,7 @@ export default class DonorAdd extends React.Component {
                     </div>
 
 
-                    <div className="form-group">
+                    <div className="form-group" key="service-rank">
 
                         <label>Service
                             <select
@@ -190,9 +202,17 @@ export default class DonorAdd extends React.Component {
                             </select>
                         </label>
                         <Spacer amount={8} />
-                        <label>MOS:
+                        <label>Rank
                             <input type="text"
                                    required
+                                   className="form-control"
+                                   value={this.state.rank}
+                                   onChange={this.onChangeRank}
+                            />
+                        </label>
+                        <Spacer amount={8} />
+                        <label>MOS:
+                            <input type="text"
                                    className="form-control"
                                    value={this.state.mos}
                                    onChange={this.onChangeMos}
@@ -220,16 +240,16 @@ export default class DonorAdd extends React.Component {
     componentDidMount() {
         this.setState(
             {
-                bloodtypes: ['A POS', 'A NEG', 'B POS', 'B NEG', 'AB POS', 'AB NEG', 'O POS', 'O NEG'],
-                bloodtype: 'O NEG',
+                bloodtypes: ['A Positive', 'A Negative', 'B Positive', 'B Negative', 'AB Positive', 'AB Negative', 'O Positive', 'O Negative'],
+                bloodtype: 'A Positive',
 
-                genders: ['Male', 'Female', 'Other'],
-                gender: 'Male',
+                genders: ['MALE', 'FEMALE', 'OTHER'],
+                gender: 'MALE',
 
-                races: ['Hispanic', 'Caucasian', 'Black', 'Asian', 'SE Asian', 'Pacific Islander', 'Native American', 'Other'],
-                race: 'Caucasian',
+                races: ['HISPANIC', 'CAUCASIAN', 'BLACK', 'ASIAN', 'SE ASIAN', 'PACIFIC ISLANDER', 'NATIVE AMERICAN', 'OTHER'],
+                race: 'CAUCASIAN',
 
-                services: ['ARMY', 'AIR FORCE', 'MARINES', 'NAVY', 'COAST GUARD', 'ANG', 'CIV', 'FN', 'OTHER'],
+                services: ['USA', 'USAF', 'USMC', 'USN', 'USCG', 'USANG', 'CIV', 'FN', 'OTHER'],
                 service: 'OTHER'
             }
         )
@@ -266,6 +286,12 @@ export default class DonorAdd extends React.Component {
         })
     }
 
+    onChangeDodid(e) {
+        this.setState({
+            dodid: e.target.value
+        })
+    }
+
     onChangeDob(e){
         this.setState({
             dob: e.target.value
@@ -294,6 +320,12 @@ export default class DonorAdd extends React.Component {
     onChangePaygrade(e){
         this.setState( {
             paygrade: e.target.value
+        })
+    }
+
+    onChangeRank(e){
+        this.setState( {
+            rank: e.target.value
         })
     }
 
@@ -330,14 +362,15 @@ export default class DonorAdd extends React.Component {
             mos: this.state.mos.toUpperCase(),
             rank: this.state.rank.toUpperCase(),
             paygrade: this.state.paygrade.toUpperCase(),
+            lastdonation: this.state.lastdonation,
             donations: this.state.donations
         }
 
-        console.log(donor);
-
         axios.post('http://localhost:5000/donor/add', donor)
             .then(res => console.log(res.data))
-
+            .catch(error => {
+                console.log(error.response)
+            });
         window.location = '/';
     }
 }

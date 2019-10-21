@@ -1,25 +1,32 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import "bootstrap/dist/css/bootstrap-grid.min.css";
+import logo from "./blood-donation-svgrepo-com.svg";
+import {BrowserRouter as Router, Route}from "react-router-dom";
+
+import Navbar from "./components/navbar.component";
+import DonorEditor from "./components/donor-editor.component";
+import DonorAdd from "./components/donor-add.component";
+import DonorGet from "./components/donor-get.component";
+import ProductGet from "./components/product-get.component";
+import Home from "./components/account-registration.component";
+import Login from "./components/login.component";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+     <Router>
+         <img src={logo} className="App-logo" alt="logo" width={80} height={80} mode='fit' vspace="20"/>
+         <div className="container">
+             <Navbar />
+             <br />
+                 <Route path="/Home" component={Home}/>
+                 <Route path="/edit-donor" component={DonorEditor}/>
+                 <Route path="/add-donor" component={DonorAdd}/>
+                 <Route path="/get-donor/:id" component={DonorGet}/>
+                 <Route path="/get-products" component={ProductGet}/>
+             <Route path="/login" component={Login}/>
+             <hr/>
+         </div>
+     </Router>
   );
 }
 
