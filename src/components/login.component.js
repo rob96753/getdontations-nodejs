@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from "axios";
 
 
 //import DatePicker from 'react-datepicker';
@@ -12,7 +13,7 @@ export default class login extends React.Component {
         // be sure to call .bind(this) to prevent "TypeError: Cannot read property 'value' of undefined react on change"
         this.onChangeEmailAddress = this.onChangeEmailAddress.bind(this);
         this.onChangePassword = this.onChangePassword.bind(this);
-
+        this.onSubmit = this.onSubmit.bind(this);
 
         // this is equivalent to creating a variable
         this.state = {
@@ -33,6 +34,7 @@ export default class login extends React.Component {
                 <br/>
                 <label>Email Address</label>
                     <input type="text"
+                           id='login-email-address'
                            required
                            className="form-control"
                            value={this.state.emailaddress}
@@ -42,6 +44,7 @@ export default class login extends React.Component {
 
                 <label>Password</label>
                     <input type="password"
+                           id='login-password'
                            required
                            className="form-control"
                            value={this.state.password}
@@ -49,8 +52,11 @@ export default class login extends React.Component {
                            style={{flex:2,flexDirection:"row",justifycontent:'space-between',padding:'10px',width:220}}
                     />
                     <br />
-                    <input type="submit" value="Login" className="btn btn-primary"
-                    style={{textalign:"center"}}/>
+                    <input type="submit"
+                            id='login-submit-button'
+                            value="Login"
+                            className="btn btn-primary"
+                            style={{textalign:"center"}}/>
                     <br />
                 </div>
 
@@ -62,7 +68,6 @@ export default class login extends React.Component {
     componentDidMount() {
 
     }
-
 
     onChangeEmailAddress(e) {
         // always use he setState method
@@ -80,5 +85,18 @@ export default class login extends React.Component {
     onSubmit(e) {
         // prevents default HTML submit from performing
         e.preventDefault();
+        const user= {
+            emailaddress: this.state.emailaddress.toLowerCase(),
+            password: encodeURI(this.state.password),
+        }
+
+        axios.post('http://localhost:5000/api/users/validate', user)
+            .then((res) => {console.log(res.data)
+            })
+            .catch(error => {
+                console.log(error.response)
+            });
+
+        //window.location = '/';
     }
 }

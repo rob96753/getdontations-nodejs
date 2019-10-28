@@ -6,23 +6,26 @@ export default class Navbar extends Component {
     render() {
         return (
             <nav className="navbar navbar-dark bg-dark navbar-expand-lg">
-                <Link to="/" className="navbar-brand">Blood Donations</Link>
+                <Link id='navbar-link-default' to="/" className="navbar-brand">Blood Donations</Link>
                 <div className="collpase navbar-collapse">
                     <ul className="navbar-nav mr-auto">
-                        <li className="navbar-item">
-                            <Link to="/edit-donor" className="nav-link">Edit Donor</Link>
+                        <li id='navbar-edit-donor' className="navbar-item">
+                            <Link id='navbar-link-edit-donor' to="/edit-donor" className="nav-link">Edit Donor</Link>
                         </li>
-                        <li className="navbar-item">
-                            <Link to="/add-donor" className="nav-link">Add Donor</Link>
+                        <li id='navbar-add-donor' className="navbar-item">
+                            <Link id='navbar-link-add-donor' to="/add-donor" className="nav-link">Add Donor</Link>
                         </li>
-                        <li className="navbar-item">
-                            <Link to="/get-donor/:id" className="nav-link">Get Donor</Link>
+                        <li id='navbar-donor-report' className="navbar-item">
+                            <Link id='navbar-link-donor-report' to="/donor-report" className="nav-link">Donor Report</Link>
                         </li>
-                        <li className="navbar-item">
-                            <Link to="/get-products" className="nav-link">Get Products</Link>
+                        <li id='navbar-get-donor-by-id' className="navbar-item">
+                            <Link id='navbar-link-get-donor-by-id' to="/get-donor/:id" className="nav-link">Get Donor</Link>
                         </li>
-                        <li className="navbar-item">
-                            <Link to="/home" className="nav-link"><b>Register/Login</b></Link>
+                        <li id='navbar-get-products' className="navbar-item">
+                            <Link id='navbar-link-get-products' to="/get-products" className="nav-link">Get Products</Link>
+                        </li>
+                        <li id='navbar-register-login' className="navbar-item">
+                            <Link id='navbar-link-register-login' to="/login" className="nav-link"><b>Register/Login</b></Link>
                         </li>
                     </ul>
                 </div>
