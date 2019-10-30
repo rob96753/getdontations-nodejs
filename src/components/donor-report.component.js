@@ -2,13 +2,6 @@ import React from 'react';
 import axios from 'axios';
 import DateFormatting from '../util/dateformatting';
 
-//@desc compare the current date against the date of last donation
-function isEligible(lastdonationdate) {
-    let daysBetweenDonations = 54;
-    if (!lastdonationdate) return true;
-    return (Date.now() - (daysBetweenDonations * 3600 * 24 * 1000)) < lastdonationdate;
-}
-
 const Donor = props => (
     <tr>
         <td style={{fontsize: "12px"}}>{props.donor.lastname}</td>

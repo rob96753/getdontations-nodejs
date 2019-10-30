@@ -28,9 +28,10 @@ export default class DateFormatting{
 
     }
 
+
     getShortMonthName(month_number) {
         if (month_number >= 0 && month_number <= 11) {
-            return this.state.months[month_number].substring(0,3).toUpperCase();
+            return this.state.months[month_number -1].substring(0,3).toUpperCase();
         } else {
             return this.state.months[0].substring(0,3).toUpperCase();
         }
@@ -46,9 +47,11 @@ export default class DateFormatting{
 
     }
 
+    //@desc converts a date to a military date format. There was an issue with the converted time being represented
+    //      in local time. This method preserves the date in UTC.
     getMilDateFormat(date) {
-        let dateFormatted = new Date(date);
-        return `${dateFormatted.getDay()} ${this.getShortMonthName(dateFormatted.getMonth())}  ${dateFormatted.getFullYear()}`;
+        var result = date.split(/[-T:]/);
+        return `${Number(result[2])} ${this.getShortMonthName(Number(result[1]))}  ${Number(result[0])}`;
     }
 
     isEligible(date) {

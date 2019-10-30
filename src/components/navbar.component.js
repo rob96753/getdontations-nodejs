@@ -18,6 +18,9 @@ export default class Navbar extends Component {
                         <li id='navbar-donor-report' className="navbar-item">
                             <Link id='navbar-link-donor-report' to="/donor-report" className="nav-link">Donor Report</Link>
                         </li>
+                        <li id='navbar-donations-report' className="navbar-item">
+                            <Link id='navbar-link-donations-report' to="/donation-report" className="nav-link">Donation Report</Link>
+                        </li>
                         <li id='navbar-get-donor-by-id' className="navbar-item">
                             <Link id='navbar-link-get-donor-by-id' to="/get-donor/:id" className="nav-link">Get Donor</Link>
                         </li>
