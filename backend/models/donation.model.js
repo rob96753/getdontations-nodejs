@@ -20,6 +20,7 @@ const donationSchema = new Schema({
         trim: true,
         minlength: 10
     },
+    donationdate: Date,
     donationsite: String,
     race: String,
     service: String,

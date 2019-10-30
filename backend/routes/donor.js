@@ -1,5 +1,10 @@
 const router = require('express').Router();
 let Donor = require('../models/donor.model');
+const authorize = require('../../middleware/auth');
+
+
+require('dotenv').config();
+const DAYS_BETWEEN_DONATIONS = process.env.DAYS_BETWEEN_DONATIONS;
 
 router.route('/').get((req, res) => {
     Donor.find()
@@ -7,6 +12,12 @@ router.route('/').get((req, res) => {
         .catch(err=> res.status(400).json('Error' + err));
 });
 
+
+
+
+// @route POST /donors/add
+// @desc Adds a donor to the database
+// @access Private
 router.route('/add').post((req, res) => {
     const firstname = req.body.firstname;
     const lastname = req.body.lastname;
@@ -41,6 +52,8 @@ router.route('/add').post((req, res) => {
         donations
     });
 
+    console.log(newDonor)
+
     newDonor.save()
         .then(() => res.json('Donor Added!'))
         .catch(err=> res.status(400).json('Error: ' + err));
@@ -51,7 +64,7 @@ router.route('/add').post((req, res) => {
  * @param req {donorlastname, donorssn, donordob {donation}}
  *
  */
-router.route('/donation').put((req, res) =>{
+router.put('/donation',authorize,(req, res) =>{
 
     }
 )
@@ -60,12 +73,20 @@ router.route('/donation').put((req, res) =>{
  * Find a donor using the donors internal database _id
  *
  */
-router.route('/:id').get((req, res)=>{
+router.get('/:id',authorize,(req, res)=>{
     Donor.findById(req.params.id)
         .then(donor=> res.json(donor))
         .catch(err=> res.status(400).json('Error: ' + err));
 });
 
+
+router.get('/eligible/:donors_count',authorize,(req, res)=>{
+    var lastEligibleDonation = Date.now() - (DAYS_BETWEEN_DONATIONS * (1000 * 3600 * 24))
+
+    Donor.find({lastdonation: {$gt: lastEligibleDonation}})
+        .then(donors=> res.json(donors))
+        .catch(err=> res.status(400).json('Error' + err));
+});
 
 
 /**
@@ -74,21 +95,48 @@ router.route('/:id').get((req, res)=>{
  *
  * http://localhost:5000/donor/find/LAWSON/966-21-1789/1988-04-15
  */
-router.route('/find/:lastname/:ssn/:dob').get((req, res) => {
+router.get('/find/:lastname/:ssn/:dob',authorize,(req, res) => {
     Donor.findOne({lastname: req.params.lastname, ssn: req.params.ssn, dob: new Date(req.params.dob)}, function(err, adventure) {})
         .then( (donor=>res.json(donor)))
             .catch(err=>res.status(400).json('Find Error' + err));
 
 });
 
-router.route('/:id').delete((req, res)=>{
+
+// @route POST /donors/update
+// @desc Updates donor information with last donation date and adds donation to list of donations
+// @access Private
+router.put('/update',authorize,(req, res) => {
+    const lastname = req.body.lastname;
+    const ssn = req.body.ssn;
+    const dob = new Date(req.body.dob);
+    const donation = req.body.donation;
+    let result = '';
+    console.log(donation);
+    Donor.findOne({lastname: lastname, ssn: ssn, dob: new Date(dob)}, function(err, result) {
+        const _id = result._id;
+        const lastdonation = new Date(result.lastdonation).setHours(0,0,0,0);
+        const currentdate = new Date();
+        var difference_in_time = (currentdate - lastdonation)/ (1000 * 3600 * 24);
+
+        console.log(`Result: ${difference_in_time} ${_id} ${daysbetweendonation}`);
+
+    })
+        .then( (donor=>res.json(donor)))
+        .catch(err=>res.status(400).json('Find Error' + err));
+
+
+
+});
+
+router.delete('/:id',authorize,(req, res)=>{
     Donor.findByIdAndDelete(req.params.id)
         .then(()=> res.json('Donor deleted!'))
         .catch(err=> res.status(400).json('Error: ' + err));
     }
 );
 
-router.route('/eligible/:days').delete((req, res)=>{
+router.delete('/eligible/:days',authorize,(req, res)=>{
         Donor.findBy(req.params.days)
             .then(()=> res.json('Donor deleted!'))
             .catch(err=> res.status(400).json('Error: ' + err));

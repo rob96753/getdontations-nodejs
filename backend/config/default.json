@@ -1,0 +1,6 @@
+{
+  "mongoURI": "mongodb+srv://bloodpoc:drowssap@donorsanddonations-h125b.mongodb.net/donorsAndDonations?retryWrites=true&w=majority",
+  "jwtSecret": "blood$ecretsAreR3alSecrets&",
+  "tokenExpiresIn": 3600,
+  "daysBetweenDonations": 54
+}

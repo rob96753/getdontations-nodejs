@@ -20,6 +20,7 @@ router.route('/add').post((req, res) => {
     const paygrade = req.body.paygrade;
     const din = req.body.din;
     const donationsite = req.body.donationsite;
+    const donationdate = req.body.donationdate;
     const products = req.body.products;
     const donationuic = req.body.donationuic;
 
@@ -30,6 +31,7 @@ router.route('/add').post((req, res) => {
         bloodtype,
         dob,
         din,
+        donationdate,
         donationsite,
         donationuic,
         race,
