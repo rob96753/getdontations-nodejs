@@ -14,6 +14,7 @@ import {
 } from 'reactstrap';
 import RegisterModal from './auth/register-modal.component'
 import LoginModal from './auth/login-modal.component'
+import Logout from './auth/logout.component'
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -32,9 +33,12 @@ class AppNavbar extends Component {
         const authenticatedLinks =  (
             <Fragment>
                 <NavItem>
-          <span className='navbar-text mr-3'>
-            <strong>{user ? `Welcome ${user.name}` : ''}</strong>
-          </span>
+                    <Logout />
+                </NavItem>
+                <NavItem>
+                  <span className='navbar-text mr-3'>
+                    <strong>{user ? `Welcome ${user.name}` : ''}</strong>
+                  </span>
                 </NavItem>
             </Fragment>
 
