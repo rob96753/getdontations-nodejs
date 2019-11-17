@@ -1,19 +1,32 @@
 {
-  "name": "mern-get-donations",
+  "name": "client",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@types/react-transition-group": "^4.2.3",
     "axios": "^0.19.0",
+    "bcryptjs": "^2.4.3",
     "bootstrap": "^4.3.1",
+    "classnames": "^2.2.6",
+    "config": "^3.2.4",
+    "email-validator": "^2.0.4",
+    "http-status-codes": "^1.4.0",
     "jquery": "^3.4.1",
-    "react": "^16.10.2",
+    "jsonwebtoken": "^8.5.1",
+    "nodemon": "^1.19.4",
+    "prop-types": "^15.7.2",
+    "react": "^16.11.0",
     "react-add-space": "^1.0.7",
     "react-datepicker": "^2.9.6",
-    "react-dom": "^16.10.2",
-    "react-redux":  "^7.1.1",
+    "react-dom": "^16.11.0",
     "react-input-mask": "^2.0.4",
+    "react-redux": "^7.1.1",
     "react-router-dom": "^5.1.2",
     "react-scripts": "^3.2.0",
+    "react-transition-group": "^4.3.0",
+    "reactstrap": "^8.1.1",
+    "redux": "^4.0.4",
+    "redux-thunk": "^2.3.0",
     "styled-components": "^4.4.0"
   },
   "scripts": {
@@ -39,5 +52,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "proxy": "http://localhost:5000"
 }

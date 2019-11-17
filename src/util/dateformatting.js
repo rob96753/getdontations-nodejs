@@ -1,5 +1,3 @@
-
-
 export default class DateFormatting{
     constructor(props) {
         //super(props);
@@ -59,6 +57,11 @@ export default class DateFormatting{
         let daysBetweenDonations = 54;
         if (!lastdonationdate) return true;
         return (Date.now() - (daysBetweenDonations * 3600 * 24 * 1000)) > lastdonationdate;
-
     }
+
+    getEligibleDate()  {
+        let daysBetweenDonations = 54;
+        return (Date.now() - (daysBetweenDonations * 3600 * 24 * 1000));
+    }
+
 }

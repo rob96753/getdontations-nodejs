@@ -1,17 +1,15 @@
 import React from 'react';
-import axios from 'axios';
-import DateFormatting from '../util/dateformatting';
-
 import { connect } from 'react-redux';
-import {getDonations} from '../actions/donation.action';
 import PropTypes from 'prop-types';
+import DateFormatting from '../util/dateformatting';
+import {getDonations} from '../actions/donation.action';
 
 const df = new DateFormatting();
 
 //@desc lays out the report results
 //@todo need to display the product child values correctly.
 const Donation = props => (
-    <tr>
+    <tr key={props.donation.id}>
         <td style={{fontsize: "12px"}}>{props.donation.lastname}</td>
         <td>{props.donation.dob}</td>
         <td>{props.donation.ssn}</td>

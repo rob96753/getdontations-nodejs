@@ -10,21 +10,53 @@ import {
     Nav,
     NavItem,
     NavLink,
-    Container
+    Container,
+    DropdownMenu,
+    Dropdown,
+    DropdownItem,
+    DropdownToggle,
+    UncontrolledDropdown
 } from 'reactstrap';
 import RegisterModal from './auth/register-modal.component'
 import LoginModal from './auth/login-modal.component'
 import Logout from './auth/logout.component'
 
+
+
+import DonorAdd from './donor-add.component';
+import DonorEdit from './donor-editor.component';
+import DonorReport from './donor-report.component';
+
 import "bootstrap/dist/css/bootstrap.min.css";
+import logo from "../blood-donation-svgrepo-com.svg";
 
 class AppNavbar extends Component {
     state = {
-        isOpen: false
+        isOpen: false,
+        donorsState: false,
+        reportsState: false
     };
 
     static propTypes = {
         auth: PropTypes.object.isRequired
+    };
+
+    toggle = () => {
+        this.setState({
+            isOpen: !this.state.isOpen
+        });
+    };
+
+    dropdownToggle = () => {
+        this.setState({
+            donorsState: !this.state.donorsState
+        });
+    };
+
+    dropdownToggle1 = () => {
+        this.setState({
+            reportsState: !this.state.reportsState
+        });
     };
 
     render() {
@@ -36,62 +68,75 @@ class AppNavbar extends Component {
                     <Logout />
                 </NavItem>
                 <NavItem>
-                  <span className='navbar-text mr-3'>
-                    <strong>{user ? `Welcome ${user.name}` : ''}</strong>
+                  <span className='navbar-text ml-3'>
+                    {user ? `Welcome ${user.name}` : ''}
                   </span>
                 </NavItem>
             </Fragment>
-
         );
 
         const unauthenticatedLinks = (
             <Fragment>
-                <NavItem>
-                    <NavItem id='navbar-register-register'>
-                        <RegisterModal />
-                    </NavItem>
-                    <NavItem id='navbar-register-login'>
-                        <LoginModal />
-                    </NavItem>
+                <NavItem id='navbar-register-register'>
+                    <RegisterModal />
+                </NavItem>
+                <NavItem id='navbar-register-login'>
+                    <LoginModal />
                 </NavItem>
             </Fragment>
 
         );
 
         return (
+
             <div className="collpase navbar-collapse">
-                <Navbar className="navbar navbar-dark bg-dark navbar-expand-lg">
-                    <Link id='navbar-link-default' to="/" className="navbar-brand">Blood Donations</Link>
+                <div>
+                    <Navbar color='dark' dark expand='sm' className='mb-5'>
+                        <img src={logo} className="navbar-left" alt="logo" width={50} height={50} mode='fit' vspace="20"/>
+                            <NavbarBrand  id='navbar-add-brand' href='/'>Blood Donations</NavbarBrand>
+                        <UncontrolledDropdown nav inNavbar>
+                                <DropdownToggle nav={true} caret disabled={!isAuthenticated}>
+                                    Donors
+                                </DropdownToggle>
 
-                        <ul className="navbar-nav mr-auto">
-                            <li id='navbar-edit-donor' className="navbar-item">
-                                <Link id='navbar-link-edit-donor' to="/edit-donor" className="nav-link">Edit Donor</Link>
-                            </li>
-                            <li id='navbar-add-donor' className="navbar-item">
-                                <Link id='navbar-link-add-donor' to="/add-donor" className="nav-link">Add Donor</Link>
-                            </li>
-                            <li id='navbar-donor-report' className="navbar-item">
-                                <Link id='navbar-link-donor-report' to="/donor-report" className="nav-link">Donor Report</Link>
-                            </li>
-                            <li id='navbar-donations-report' className="navbar-item">
-                                <Link id='navbar-link-donations-report' to="/donation-report" className="nav-link">Donation Report</Link>
-                            </li>
-                            <li id='navbar-get-donor-by-id' className="navbar-item">
-                                <Link id='navbar-link-get-donor-by-id' to="/get-donor/:id" className="nav-link">Get Donor</Link>
-                            </li>
-                            <li id='navbar-get-products' className="navbar-item">
-                                <Link id='navbar-link-get-products' to="/get-products" className="nav-link">Get Products</Link>
-                            </li>
-                            <Nav className='ml-auto' navbar>
-                                {isAuthenticated ? authenticatedLinks: unauthenticatedLinks}
-                            </Nav>
-                        </ul>
+                                <DropdownMenu >
+                                    <DropdownItem id='navbar-link-add-donor' href="/add-donor">Add...</DropdownItem>
+                                    <DropdownItem id='navbar-link-edit-donor' href="/edit-donor">Edit...</DropdownItem>
+                                </DropdownMenu>
+                            </UncontrolledDropdown >
 
-                </Navbar>
+                        <UncontrolledDropdown nav inNavbar>
+                            <DropdownToggle  nav caret  disabled={!isAuthenticated} >
+                                Donations
+                            </DropdownToggle>
+                            <DropdownMenu >
+                                <DropdownItem id='navbar-donor-report' href="/donor-report">Create Donations</DropdownItem>
+                            </DropdownMenu>
+                        </UncontrolledDropdown >
+
+                        <UncontrolledDropdown nav inNavbar>
+                                <DropdownToggle  nav caret  disabled={!isAuthenticated} >
+                                    Reports
+                                </DropdownToggle>
+                                <DropdownMenu >
+                                    <DropdownItem id='navbar-donor-report' href="/donor-report">Donors</DropdownItem>
+                                    <DropdownItem id='navbar-donations-report' href="/donation-report">Donations</DropdownItem>
+                                    <DropdownItem id='navbar-link-get-products' href="/get-products">Products</DropdownItem>
+                                </DropdownMenu>
+                            </UncontrolledDropdown >
+
+                            <Collapse isOpen={this.state.isOpen} navbar>
+                                <Nav className='ml-auto' navbar>
+                                    {isAuthenticated ? authenticatedLinks: unauthenticatedLinks}
+                                </Nav>
+                            </Collapse>
+                    </Navbar>
+                </div>
             </div>
         );
     }
 }
+
 
 const mapStateToProps = state => ({
     auth: state.auth

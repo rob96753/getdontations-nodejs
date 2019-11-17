@@ -8,10 +8,14 @@ export const GET_DONORS = 'GET_DONORS';
 export const ADD_DONOR = 'ADD_DONOR';
 export const DELETE_DONOR = 'DELETE_DONOR';
 export const DONORS_LOADING = 'DONORS_LOADING';
+export const GET_ELIGIBLE_DONORS = 'GET_ELIGIBLE_DONORS';
+export const DONOR_ADDED = 'DONOR_ADDED';
+export const DONOR_ADD_FAILED = 'DONOR_ADD_FAILED';
+export const DONOR_SUCCESS = 'DONOR_SUCCESS';
 
 // User
 export const USER_LOADING = "USER_LOADING";
-export const USER_LOADED = "USER_LOADED";
+export const USER_AUTHENTICATED = "USER_AUTHENTICATED";
 export const REGISTER_USER = "REGISTER_USER";
 
 // Auhtentication

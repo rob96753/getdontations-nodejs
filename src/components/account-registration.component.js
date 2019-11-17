@@ -37,6 +37,7 @@ export default class registration extends React.Component {
             savedTarget: '',
             savedEvent: '',
             passwordstyle: {flex:2,flexDirection:"row",justifycontent:'space-between',padding:'10px',width:BASE_WIDTH - INSET, backgroundColor: '#FFFFF'},
+            confirmpasswordstyle: {flex:2,flexDirection:"row",textalign:"center",padding:'10',width:BASE_WIDTH - INSET},
             passwordnoticestyle: "center",
             passwordnoticevisible: false,
             visibility: "hidden",
@@ -112,7 +113,7 @@ export default class registration extends React.Component {
                            value={this.state.confirmpassword}
                            onChange={this.onConfirmPassword}
                            onBlur={this.onBlurConfirmPassword}
-                           style={{flex:2,flexDirection:"row",textalign:"center",padding:'10',width:BASE_WIDTH - INSET}}
+                           style={this.state.confirmpasswordstyle}
                     />
                     <br />
                     <input type="submit" value="Register" className="btn btn-primary"
@@ -195,8 +196,12 @@ export default class registration extends React.Component {
     }
 
     onBlurConfirmPassword(e) {
-        if (this.state.confirmpassword === this.state.passwordhash) {
-            console.log("Passwords Match")
+        if (this.state.confirmpassword === this.state.password) {
+            console.log("Passwords Match");
+            this.setState( {
+                confirmpasswordstyle: {flex:2,flexDirection:"row",justifycontent:'space-between',padding:'10px',width:BASE_WIDTH - INSET, backgroundColor: '#8CC152'}
+                }
+            );
         }
 
     }

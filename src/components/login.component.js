@@ -85,12 +85,13 @@ export default class login extends React.Component {
     onSubmit(e) {
         // prevents default HTML submit from performing
         e.preventDefault();
+
         const user= {
             emailaddress: this.state.emailaddress.toLowerCase(),
             password: encodeURI(this.state.password),
         }
 
-        axios.post('http://localhost:5000/api/users/validate', user)
+        axios.post('http://localhost:5000/api/users/authenticate', user)
             .then((res) => {console.log(res.data)
             })
             .catch(error => {
