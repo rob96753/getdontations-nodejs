@@ -65,6 +65,7 @@ const donorSchema = new Schema({
     },
     {
         timestamps: true,
+        _id: true
 
     });
 
