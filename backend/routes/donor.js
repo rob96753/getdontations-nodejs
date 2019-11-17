@@ -1,12 +1,18 @@
 const router = require('express').Router();
 let Donor = require('../models/donor.model');
-const authorize = require('../../middleware/auth');
+const auth = require('../../middleware/auth');
+const config = require('config');
 
 
-require('dotenv').config();
-const DAYS_BETWEEN_DONATIONS = process.env.DAYS_BETWEEN_DONATIONS;
+const DAYS_BETWEEN_DONATIONS = config.get('daysBetweenDonations');
 
-router.route('/').get((req, res) => {
+function getEligibleDate()  {
+    var d = new Date();
+    d.setDate(d.getDate() - (DAYS_BETWEEN_DONATIONS));
+    return (d);
+}
+
+router.get('/', auth, (req, res) => {
     Donor.find()
         .then(donors=> res.json(donors))
         .catch(err=> res.status(400).json('Error' + err));
@@ -14,11 +20,10 @@ router.route('/').get((req, res) => {
 
 
 
-
 // @route POST /donors/add
 // @desc Adds a donor to the database
 // @access Private
-router.route('/add').post((req, res) => {
+router.post('/add',  auth, (req, res) => {
     const firstname = req.body.firstname;
     const lastname = req.body.lastname;
     const middlename = req.body.middlename;
@@ -34,6 +39,7 @@ router.route('/add').post((req, res) => {
     const paygrade = req.body.paygrade;
     const lastdonation = Date.parse(req.body.lastdonation);
     const donations = req.body.donations;
+    const _id = null;
 
     const newDonor = new Donor({firstname,
         lastname,
@@ -49,13 +55,12 @@ router.route('/add').post((req, res) => {
         rank,
         paygrade,
         lastdonation,
-        donations
+        donations,
+        _id
     });
 
-    console.log(newDonor)
-
     newDonor.save()
-        .then(() => res.json('Donor Added!'))
+        .then(() => res.json({donor:newDonor, msg: 'Donor Added!'}))
         .catch(err=> res.status(400).json('Error: ' + err));
 });
 
@@ -64,7 +69,7 @@ router.route('/add').post((req, res) => {
  * @param req {donorlastname, donorssn, donordob {donation}}
  *
  */
-router.put('/donation',authorize,(req, res) =>{
+router.put('/donation' ,(req, res) =>{
 
     }
 )
@@ -73,21 +78,11 @@ router.put('/donation',authorize,(req, res) =>{
  * Find a donor using the donors internal database _id
  *
  */
-router.get('/:id',authorize,(req, res)=>{
+router.get('/search/', (req, res)=>{
     Donor.findById(req.params.id)
         .then(donor=> res.json(donor))
         .catch(err=> res.status(400).json('Error: ' + err));
 });
-
-
-router.get('/eligible/:donors_count',authorize,(req, res)=>{
-    var lastEligibleDonation = Date.now() - (DAYS_BETWEEN_DONATIONS * (1000 * 3600 * 24))
-
-    Donor.find({lastdonation: {$gt: lastEligibleDonation}})
-        .then(donors=> res.json(donors))
-        .catch(err=> res.status(400).json('Error' + err));
-});
-
 
 /**
  * Find a donor using the golden demographics for the donor
@@ -95,18 +90,17 @@ router.get('/eligible/:donors_count',authorize,(req, res)=>{
  *
  * http://localhost:5000/donor/find/LAWSON/966-21-1789/1988-04-15
  */
-router.get('/find/:lastname/:ssn/:dob',authorize,(req, res) => {
-    Donor.findOne({lastname: req.params.lastname, ssn: req.params.ssn, dob: new Date(req.params.dob)}, function(err, adventure) {})
-        .then( (donor=>res.json(donor)))
-            .catch(err=>res.status(400).json('Find Error' + err));
-
+router.get('/find' ,(req, res) => {
+    var {lastname, ssn, dob} = req.body;
+    Donor.findOne({lastname: `lastname`, ssn: `ssn`}
+        , function(err,obj) {res.json(err)});
 });
 
 
 // @route POST /donors/update
 // @desc Updates donor information with last donation date and adds donation to list of donations
 // @access Private
-router.put('/update',authorize,(req, res) => {
+router.put('/update', (req, res) => {
     const lastname = req.body.lastname;
     const ssn = req.body.ssn;
     const dob = new Date(req.body.dob);
@@ -129,17 +123,19 @@ router.put('/update',authorize,(req, res) => {
 
 });
 
-router.delete('/:id',authorize,(req, res)=>{
+router.delete('/:id',(req, res)=>{
     Donor.findByIdAndDelete(req.params.id)
         .then(()=> res.json('Donor deleted!'))
         .catch(err=> res.status(400).json('Error: ' + err));
     }
 );
 
-router.delete('/eligible/:days',authorize,(req, res)=>{
-        Donor.findBy(req.params.days)
-            .then(()=> res.json('Donor deleted!'))
-            .catch(err=> res.status(400).json('Error: ' + err));
+router.post('/eligible',(req, res)=>{
+    const count = req.body.count;
+    console.log(count);
+    Donor.find({lastdonation: {$lte:getEligibleDate()}})
+        .then(donors=> res.json(donors))
+        .catch(err=> res.status(400).json('Error' + err));
     }
 );
 

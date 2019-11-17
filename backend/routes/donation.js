@@ -1,12 +1,20 @@
 const router = require('express').Router();
 let Donation = require('../models/donation.model');
 
+
+//@route Get /donation/
+//@desc Get All Donations
+//@access Public
 router.route('/').get((req, res) => {
     Donation.find()
         .then(donations=> res.json(donations))
         .catch(err=> res.status(400).json('Error' + err));
 });
 
+
+//@route Post /donation/add
+//@desc Add a Donation to the database
+//@access Public
 router.route('/add').post((req, res) => {
     const firstname = req.body.firstname;
     const lastname = req.body.lastname;
@@ -42,7 +50,7 @@ router.route('/add').post((req, res) => {
     });
 
     newDonation.save()
-        .then(() => res.json('Donation Added!'))
+        .then(() => res.json(donation=> res.json(donation)))
         .catch(err=> res.status(400).json('Error: ' + err));
 });
 
