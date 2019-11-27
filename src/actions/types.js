@@ -3,6 +3,8 @@ export const GET_DONATIONS = 'GET_DONATIONS';
 export const ADD_DONATION = 'ADD_DONATION';
 export const DELETE_DONATION = 'DELETE_DONATION';
 export const DONATIONS_LOADING = 'DONATIONS_LOADING';
+export const CREATE_DONATIONS = 'CREATE_DONATIONS';
+
 // Donors
 export const GET_DONORS = 'GET_DONORS';
 export const ADD_DONOR = 'ADD_DONOR';

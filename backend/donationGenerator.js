@@ -1,4 +1,12 @@
-require('dotenv').config();
+const config = require('config');
+const products = require(config.get('productsPath'));
 
-const products = require(process.env.PRODUCTS)
-console.log(products.products)
+//@desc
+const generateProducts = () => {
+    try{
+        const products = config.products.products;
+        const productGroups = config.products.groups;
+    } catch (e) {
+
+    }
+}

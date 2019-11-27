@@ -1,4 +1,4 @@
-import {GET_DONATIONS, ADD_DONATION, DELETE_DONATION, DONATIONS_LOADING}  from './types';
+import {GET_DONATIONS, ADD_DONATION, DELETE_DONATION, CREATE_DONATIONS, DONATIONS_LOADING}  from './types';
 import axios from "axios";
 import { returnErrors } from './error.action';
 import {applyMiddleware as dispatch} from 'redux';
@@ -12,6 +12,23 @@ export const getDonations = () => (dispatch, getState) => {
             dispatch({
                 type: GET_DONATIONS,
                 donations: response.data
+                }
+            )
+        })
+        .catch((error) => {
+            dispatch(returnErrors(error.response.data, error.response.status))
+        });
+
+};
+
+//@desc Returns numberDonations donation information
+export const createDonations = (numberDonations) => (dispatch, getState) => {
+    dispatch(setDonationsLoading());
+    axios.post('http://localhost:5000/donation/', numberDonations, tokenConfig(getState))
+        .then(response=> {
+            dispatch({
+                    type: CREATE_DONATIONS,
+                    donations: response.data
                 }
             )
         })
