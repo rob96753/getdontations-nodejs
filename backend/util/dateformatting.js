@@ -1,5 +1,7 @@
 const config = require('config');
 
+const MILLISECONDS_IN_A_DAY = 24 * 3600 * 1000;
+
 class DateFormatting{
     constructor(props) {
         //super(props);
@@ -48,26 +50,56 @@ class DateFormatting{
 
     }
 
+    getYYYYMMDD() {
+        const date = new Date();
+        const year = date.getFullYear().toString();
+        const month = (date.getMonth()+1).toString().padStart(2, '0');
+        const day = (date.getDate() +1).toString().padStart(2,'0');
+        return `${year}${month}${day}`;
+    }
+
+    getYYYYMMDDMISS() {
+        const date = new Date();
+        const year = date.getFullYear().toString();
+        const month = (date.getMonth()+1).toString().padStart(2, '0');
+        const day = (date.getDate() +1).toString().padStart(2,'0');
+        const hours = (date .getHours() +1).toString().padStart(2,'0');
+        const minutes = (date.getMinutes() +1).toString().padStart(2,'0');
+        return `${year}${month}${day}${hours}${minutes}`;
+    }
+
     //@desc converts a date to a military date format. There was an issue with the converted time being represented
     //      in local time. This method preserves the date in UTC.
     getMilDateFormat(date) {
+        if (date instanceof Date) {
+            const year = date.getFullYear().toString();
+            const month = this.getShortMonthName[date.getMonth()+1];
+            const day = (date.getDate() +1).toString().padStart(2,'0');
+            const time = 'T00:00:00.000Z'
+        }
         var result = date.split(/[-T:]/);
-        return `${Number(result[2])} ${this.getShortMonthName(Number(result[1]))}  ${Number(result[0])}`;
+        return `${day.padStart(2,'0')} ${month}  ${year} ${time}`;
     }
 
     isEligible(date) {
         let lastdonationdate = new Date(date)
         let daysBetweenDonations = config.get('daysBetweenDonations');
         if (!lastdonationdate) return true;
-        return (Date.now() - (daysBetweenDonations * 3600 * 24 * 1000)) > lastdonationdate;
+        return (Date.now() - (daysBetweenDonations * MILLISECONDS_IN_A_DAY)) > lastdonationdate;
 
     }
 
     getEligibleDate()  {
         let daysBetweenDonations = config.get('daysBetweenDonations');
-        return (Date.now() - (daysBetweenDonations * 3600 * 24 * 1000));
+        return (Date.now() - (daysBetweenDonations * MILLISECONDS_IN_A_DAY));
+    }
+
+    computeExpireDate(donationDate, daysToExpire) {
+        return (donationDate + (daysToExpire * MILLISECONDS_IN_A_DAY))
     }
 }
+
+module.exports = DateFormatting;
 
 
 

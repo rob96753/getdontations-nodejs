@@ -1,17 +1,8 @@
 const router = require('express').Router();
-let Donor = require('../models/donor.model');
+const Donor = require('../models/donor.model');
 const auth = require('../../middleware/auth');
-const config = require('config');
-
-
-const DAYS_BETWEEN_DONATIONS = config.get('daysBetweenDonations');
-
-function getEligibleDate()  {
-    var d = new Date();
-    d.setDate(d.getDate() - (DAYS_BETWEEN_DONATIONS));
-    return (d);
-}
-
+const eligibleDonors = require('../util/eligibleDonors');
+const eligibleDate = require('../util/getEligibleDate');
 router.get('/', auth, (req, res) => {
     Donor.find()
         .then(donors=> res.json(donors))
@@ -119,10 +110,9 @@ router.put('/update', (req, res) => {
         .then( (donor=>res.json(donor)))
         .catch(err=>res.status(400).json('Find Error' + err));
 
-
-
 });
 
+//@desc
 router.delete('/:id',(req, res)=>{
     Donor.findByIdAndDelete(req.params.id)
         .then(()=> res.json('Donor deleted!'))
@@ -130,15 +120,14 @@ router.delete('/:id',(req, res)=>{
     }
 );
 
-router.post('/eligible',(req, res)=>{
+//@desc gets "n" elegible donors from the specified service. Uses a function written to return a promise
+router.post('/eligible',(req, res)=> {
     const count = req.body.count;
-    console.log(count);
-    Donor.find({lastdonation: {$lte:getEligibleDate()}})
-        .then(donors=> res.json(donors))
-        .catch(err=> res.status(400).json('Error' + err));
-    }
-);
-
+    const service = req.body.service;
+    eligibleDonors(count, service)
+    .then((donors=>res.json(donors)))
+        .catch(err=>res.status(400).json('Find Error' + err));
+});
 
 
 module.exports = router;

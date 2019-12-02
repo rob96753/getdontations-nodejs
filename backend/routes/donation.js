@@ -1,7 +1,6 @@
 const router = require('express').Router();
 let Donation = require('../models/donation.model');
 
-const donationGenerator = require('../donationGenerator');
 
 //@route Get /donation/
 //@desc Get All Donations
@@ -12,12 +11,7 @@ router.route('/').get((req, res) => {
         .catch(err=> res.status(400).json('Error' + err));
 });
 
-//@route Post /donation
-//@desc Generate donations and saave to the database
-//@access Public
-router.route('/').post( (req, res) => {
 
-});
 
 //@route Post /donation/add
 //@desc Add a Donation to the database

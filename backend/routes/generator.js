@@ -1,7 +1,7 @@
 const router = require('express').Router();
-let Donation = require('../models/donation.model');
-let Product = require('../models/product.model');
-let Donors  = require('../models/donor.model')
+const Product = require('../models/product.model');
+const generateProducts = require('../util/donationGenerator');
+const eligibleDonors = require('../util/eligibleDonors');
 
 function days_since_last_donation(donations_list) {
 
@@ -47,33 +47,22 @@ router.route('/deleteProduct/:id').delete((req, res)=>{
     }
 );
 
-//http://localhost:5000/generator/GetDonations/count/5/location/W1HHAA
-router.route('/GetDonations/count/:count/location/:location').get((req, res) => {
-    const count = req.params.count;
-    const location = req.params.location;
-    const someProducts = [];
-    Product.find().then((products) => {
-        products.forEach((product) => {
-                someProducts.push(product);
-            }
+//http://localhost:5000/generator/GetDonations
+router.route('/GetDonations').post((req, res) => {
+    const count = req.body.count;
+    const uic = req.body.uic;
+    const location = req.body.location;
+    const service = req.body.service.toUpperCase();
+    let donations = [];
+    eligibleDonors(count, service)
+        .then(donors=> generateProducts(uic, location, donors)
         )
-    }).catch((error)=>{
-         res.status(500).send(`Get products failed in ${error}`)
-    });
+        .then( () => res.json(donations)
+        )
+        .catch(err=>res.status(400).json('Find Error' + err));
+});
 
-    Donors.find().then((donors) => {
-        donors.forEach((donor) => {
-            for (let donation of donor.donations) {
-                console.log(donation.donationdate);
-            }
-        })
-    }).catch((error)=>{
-        res.status(500).send(`Get donors failed in ${error}`)
-    });
 
-    console.log(someProducts);
-    res.json(`Result: ${count} : ${location}`)
-})
 
 module.exports = router;
 
