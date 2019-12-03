@@ -1,10 +1,6 @@
 const mongoose = require('mongoose');
-
 const Schema = mongoose.Schema;
-const productSchema = new Schema({
-    product: String, productname: String, expiredate: {type: Date}
-});
-
+const ProductSchema = require('./donationproduct.schema');
 
 const donationSchema = new Schema({
     firstname: String,
@@ -27,14 +23,16 @@ const donationSchema = new Schema({
     rank: String,
     paygrade: String,
     donationuic: String,
-    products: [productSchema],
-    child: productSchema
+    products: [ProductSchema],
+    child: ProductSchema
     },
     {
         timestamps: true,
 
     });
 
-const DonationModel = mongoose.model('donations',donationSchema);
+const Donation = mongoose.model('Donation',donationSchema);
 
-module.exports = DonationModel;
+module.exports = Donation;
+
+

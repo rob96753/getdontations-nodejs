@@ -95,7 +95,7 @@ class DateFormatting{
     }
 
     computeExpireDate(donationDate, daysToExpire) {
-        return (donationDate + (daysToExpire * MILLISECONDS_IN_A_DAY))
+        return new Date(donationDate + (daysToExpire * MILLISECONDS_IN_A_DAY))
     }
 }
 

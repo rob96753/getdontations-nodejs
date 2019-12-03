@@ -10,24 +10,26 @@ const findDonorQuery = (lastname,  dob, ssn) => {
 
 //@desc returns elegible donors in a promise so the async nature of the call is handled correctly.
 const donorDonationUpdate =  function(donationSummary) {
-    let {lastname, dob, ssn, din, donationdate, location} = {...donationSummary};
-    let query =  findDonorQuery( lastname, dob, ssn );
     return new Promise(async function(resolve, reject) {
-        await query.exec(async function (err, donor) {
-            if (err) {
-                reject(err);
-            } else {
-                try {
+        let {lastname, dob, ssn, din, donationdate, location} = {...donationSummary};
+        ssn = ssn.slice(0, 3) + '-' + ssn.slice(3, 5) + '-' + ssn.slice(-4);
+        try {
+            Donor.findOne({lastname: lastname, ssn: ssn})
+                .then(async (donor) => {
+                    console.log(donor);
                     donor.donations.unshift({donationdate: donationdate, din: din, location: location});
                     donor.lastdonation = donationdate;
                     await donor.save();
                     resolve(donor);
-                } catch(e) {
-                    reject(e);
-                }
-            }
-        })
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        } catch (err) {
+            throw err;
+        }
     })
+
 };
 
 

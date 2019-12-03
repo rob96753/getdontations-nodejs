@@ -1,8 +1,6 @@
 const mongoose = require('mongoose');
-
+const DonorDonationSchema = require('./donordonation.schema');
 const Schema = mongoose.Schema;
-
-const donorDonationSchema = new Schema ({donationdate:{type: Date}, din: String, location: String})
 
 const donorSchema = new Schema({
     firstname: {
@@ -60,8 +58,8 @@ const donorSchema = new Schema({
         type: Date,
         default: Date("1980-01-01")
     },
-    donations:[donorDonationSchema],
-    child: donorDonationSchema
+    donations:[DonorDonationSchema],
+    child: DonorDonationSchema
     },
     {
         timestamps: true,

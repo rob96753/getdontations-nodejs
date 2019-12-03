@@ -57,8 +57,7 @@ router.route('/GetDonations').post((req, res) => {
     eligibleDonors(count, service)
         .then(donors=> generateProducts(uic, location, donors)
         )
-        .then( () => res.json(donations)
-        )
+        .then(donations=> res.json(donations))
         .catch(err=>res.status(400).json('Find Error' + err));
 });
 
